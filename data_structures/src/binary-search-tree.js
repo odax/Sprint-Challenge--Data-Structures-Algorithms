@@ -25,33 +25,42 @@ class BinarySearchTree {
     }
   }
 
-  populator(left, right, array) {
-    //populator is primarily used for breadthFirstForEach()
-    //it wlil populate an array children of specified node
-    if (left && right) array.push(left.value, right.value);
-    else if (left) array.push(left.value);
-    else if (right) array.push(right.value);
-  }
+  // populator(left, right, array) {
+  //   //populator is primarily used for breadthFirstForEach()
+  //   //it wlil populate an array children of specified node
+  //   if (left && right) array.push(left.value, right.value);
+  //   else if (left) array.push(left.value);
+  //   else if (right) array.push(right.value);
+  // }
 
 breadthFirstForEach(cb) {
-      const nodes = [];
-      nodes.push(this.value);
-      let left = this.left;
-      let right = this.right;
+      // const nodes = [];
+      // nodes.push(this.value);
+      // let left = this.left;
+      // let right = this.right;
    
-        if (left && right) {
-          this.populator(left.left, left.right, nodes);
-          this.populator(right.left, right.right, nodes);
-        } else if (left) {
-          this.populator(left.left, left.right, nodes);
-        }
-          else if (right) {
-            this.populator(right.left, right.right, nodes);
-            if (!left && !right) return;
+      //   if (left && right) {
+      //     this.populator(left.left, left.right, nodes);
+      //     this.populator(right.left, right.right, nodes);
+      //   } else if (left) {
+      //     this.populator(left.left, left.right, nodes);
+      //   }
+      //     else if (right) {
+      //       this.populator(right.left, right.right, nodes);
+      //       if (!left && !right) return;
+      // }
+      // this.populator(this.left, this.right, nodes);
+      // nodes.forEach(num => cb(num));
+      const queue = [];
+      queue.push(this);
+
+      while(queue.length !== 0) {
+        const node = queue.shift();
+        cb(node.value);
+        if(node.left) queue.push(node.left);
+        if(node.right) queue.push(node.right);
       }
-      this.populator(this.left, this.right, nodes);
-      nodes.forEach(num => cb(num));
-     }
+    }
 
 insert(value) {
   const newNode = new BinarySearchTree(value);
