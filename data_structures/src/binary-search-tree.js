@@ -1,4 +1,5 @@
 class BinarySearchTree {
+  //class will be used for each node
   constructor(value) {
     this.value = value;
     this.left = null;
@@ -13,13 +14,23 @@ class BinarySearchTree {
   */
 
   depthFirstForEach(cb) {
+    //remember depth first goes straight down
+    //this implementation starts with left and slowly moves to the right via recursion
     cb(this.value);
     if (this.left) {
       this.left.depthFirstForEach(cb);
     }
     if (this.right) {
-      the.right.depthFirstForEach(cb);
+      this.right.depthFirstForEach(cb);
     }
+  }
+
+  populator(left, right, array) {
+    //populator is primarily used for breadthFirstForEach()
+    //it wlil populate an array children of specified node
+    if (left && right) array.push(left.value, right.value);
+    else if (left) array.push(left.value);
+    else if (right) array.push(right.value);
   }
 
 breadthFirstForEach(cb) {
@@ -27,39 +38,37 @@ breadthFirstForEach(cb) {
       nodes.push(this.value);
       let left = this.left;
       let right = this.right;
-      function populator(left, right) {
-        if (left && right) nodes.push(left.value, right.value);
-        else if (left) nodes.push(left.value);
-        else if (right) nodes.push(right.value);
    
         if (left && right) {
-          populator(left.left, left.right);
-          populator(right.left, right.right);
-        } else if (left) populator(left.left, left.right);
-        else if (right) populator(right.left, right.right);
-        if (!left && !right) return;
+          this.populator(left.left, left.right, nodes);
+          this.populator(right.left, right.right, nodes);
+        } else if (left) {
+          this.populator(left.left, left.right, nodes);
+        }
+          else if (right) {
+            this.populator(right.left, right.right, nodes);
+            if (!left && !right) return;
       }
-      populator(this.left, this.right);
+      this.populator(this.left, this.right, nodes);
       nodes.forEach(num => cb(num));
      }
-}
 
-  insert(value) {
-    const newNode = new BinarySearchTree(value);
-    if (value < this.value) {
-      if (!this.left) {
-        this.left = newNode;
-      } else {
-        this.left.insert(value);
-      }
-    } else if (value >= this.value) {
-      if (!this.right) {
-        this.right = newNode;
-      } else {
-        this.right.insert(value);
-      }
+insert(value) {
+  const newNode = new BinarySearchTree(value);
+  if (value < this.value) {
+    if (!this.left) {
+      this.left = newNode;
+    } else {
+      this.left.insert(value);
+    }
+  } else if (value >= this.value) {
+    if (!this.right) {
+      this.right = newNode;
+    } else {
+      this.right.insert(value);
     }
   }
+}
 
   contains(target) {
     if (this.value === target) {
@@ -92,7 +101,8 @@ breadthFirstForEach(cb) {
     }
 
     return max;
+    }
   }
-}
+
 
 module.exports = BinarySearchTree;
